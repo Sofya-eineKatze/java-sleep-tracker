@@ -2,21 +2,28 @@ package ru.yandex.practicum.sleeptracker;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.time.LocalTime;
 
-public class ChronotypeFunction implements SleepAnalysisFunction {
+public class ChronotypeFunction implements SleepAnalysisFunction<Chronotype> {
+    private static final LocalTime LARK_SLEEP_BEFORE = LocalTime.of(22, 0);
+    private static final LocalTime LARK_WAKE_BEFORE = LocalTime.of(7, 0);
+    private static final LocalTime OWL_SLEEP_AFTER = LocalTime.of(23, 0);
+    private static final LocalTime OWL_WAKE_AFTER = LocalTime.of(9, 0);
+
     @Override
     public String getDescription() {
         return "Chronotype";
     }
 
     @Override
-    public Object apply(List<SleepingSession> sessions) {
+    public Chronotype apply(List<SleepingSession> sessions) {
         Map<Chronotype, Long> counts = sessions.stream()
                 .filter(SleepingSession::isNightSession)
                 .map(this::determineChronotype)
                 .collect(Collectors.groupingBy(
-                        chronotype -> chronotype,
+                        Function.identity(),
                         Collectors.counting()
                 ));
 
@@ -38,14 +45,14 @@ public class ChronotypeFunction implements SleepAnalysisFunction {
     }
 
     private Chronotype determineChronotype(SleepingSession session) {
-        int startHour = session.getStartTime().getHour();
-        int endHour = session.getEndTime().getHour();
+        LocalTime startTime = session.getStartTime().toLocalTime();
+        LocalTime endTime = session.getEndTime().toLocalTime();
 
-        if (startHour < 22 && endHour < 7) {
+        if (startTime.isBefore(LARK_SLEEP_BEFORE) && endTime.isBefore(LARK_WAKE_BEFORE)) {
             return Chronotype.LARK;
         }
 
-        if (startHour >= 23 && endHour >= 9) {
+        if (startTime.isAfter(OWL_SLEEP_AFTER) && endTime.isAfter(OWL_WAKE_AFTER)) {
             return Chronotype.OWL;
         }
 

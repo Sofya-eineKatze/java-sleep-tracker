@@ -1,12 +1,16 @@
 package ru.yandex.practicum.sleeptracker;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Duration;
 
 public class SleepingSession {
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
     private final SleepQuality quality;
+
+    private static final LocalTime NIGHT_START = LocalTime.of(0, 0);
+    private static final LocalTime NIGHT_END = LocalTime.of(6, 0);
 
     public enum SleepQuality {
         GOOD, NORMAL, BAD
@@ -35,16 +39,24 @@ public class SleepingSession {
     }
 
     public boolean isNightSession() {
-        LocalDateTime start = this.startTime;
-        LocalDateTime end = this.endTime;
+        LocalDateTime sessionStart = this.startTime;
+        LocalDateTime sessionEnd = this.endTime;
 
-        if (start.toLocalDate().equals(end.toLocalDate())) {
-            return false;
+        LocalDateTime currentNightStart = sessionStart.toLocalDate().atTime(NIGHT_START);
+        LocalDateTime currentNightEnd = sessionStart.toLocalDate().atTime(NIGHT_END);
+
+        if (intersects(currentNightStart, currentNightEnd, sessionStart, sessionEnd)) {
+            return true;
         }
 
-        int startHour = start.getHour();
-        int endHour = end.getHour();
+        LocalDateTime nextNightStart = sessionStart.toLocalDate().plusDays(1).atTime(NIGHT_START);
+        LocalDateTime nextNightEnd = sessionStart.toLocalDate().plusDays(1).atTime(NIGHT_END);
 
-        return true;
+        return intersects(nextNightStart, nextNightEnd, sessionStart, sessionEnd);
+    }
+
+    private boolean intersects(LocalDateTime nightStart, LocalDateTime nightEnd,
+                               LocalDateTime sessionStart, LocalDateTime sessionEnd) {
+        return sessionStart.isBefore(nightEnd) && sessionEnd.isAfter(nightStart);
     }
 }

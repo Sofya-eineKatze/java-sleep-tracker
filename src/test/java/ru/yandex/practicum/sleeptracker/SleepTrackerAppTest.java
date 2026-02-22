@@ -28,7 +28,7 @@ public class SleepTrackerAppTest {
         );
 
         TotalSessions function = new TotalSessions();
-        Integer result = (Integer) function.apply(sessions);
+        Integer result = function.apply(sessions);
 
         assertEquals(3, result);
     }
@@ -38,7 +38,7 @@ public class SleepTrackerAppTest {
         List<SleepingSession> sessions = Arrays.asList();
 
         TotalSessions function = new TotalSessions();
-        Integer result = (Integer) function.apply(sessions);
+        Integer result = function.apply(sessions);
 
         assertEquals(0, result);
     }
@@ -53,7 +53,7 @@ public class SleepTrackerAppTest {
         );
 
         BadQualitySessions function = new BadQualitySessions();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(2L, result);
     }
@@ -66,7 +66,7 @@ public class SleepTrackerAppTest {
         );
 
         BadQualitySessions function = new BadQualitySessions();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(0L, result);
     }
@@ -80,7 +80,7 @@ public class SleepTrackerAppTest {
         );
 
         AverageSleepDuration function = new AverageSleepDuration();
-        Double result = (Double) function.apply(sessions);
+        Double result = function.apply(sessions);
 
         assertEquals(318.33, Math.round(result * 100) / 100.0);
     }
@@ -92,7 +92,7 @@ public class SleepTrackerAppTest {
         );
 
         AverageSleepDuration function = new AverageSleepDuration();
-        Double result = (Double) function.apply(sessions);
+        Double result = function.apply(sessions);
 
         assertEquals(495.0, result);
     }
@@ -107,7 +107,7 @@ public class SleepTrackerAppTest {
         );
 
         DaytimeNapCount function = new DaytimeNapCount();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(2L, result);
     }
@@ -120,7 +120,7 @@ public class SleepTrackerAppTest {
         );
 
         DaytimeNapCount function = new DaytimeNapCount();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(0L, result);
     }
@@ -134,7 +134,7 @@ public class SleepTrackerAppTest {
         );
 
         MinDuration function = new MinDuration();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(50L, result);
     }
@@ -146,7 +146,7 @@ public class SleepTrackerAppTest {
         );
 
         MinDuration function = new MinDuration();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(495L, result);
     }
@@ -160,7 +160,7 @@ public class SleepTrackerAppTest {
         );
 
         MaxDuration function = new MaxDuration();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(495L, result);
     }
@@ -172,7 +172,7 @@ public class SleepTrackerAppTest {
         );
 
         MaxDuration function = new MaxDuration();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(495L, result);
     }
@@ -186,7 +186,7 @@ public class SleepTrackerAppTest {
         );
 
         SleeplessNights function = new SleeplessNights();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(1L, result);
     }
@@ -200,7 +200,7 @@ public class SleepTrackerAppTest {
         );
 
         SleeplessNights function = new SleeplessNights();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(1L, result);
     }
@@ -213,7 +213,7 @@ public class SleepTrackerAppTest {
         );
 
         SleeplessNights function = new SleeplessNights();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
         assertEquals(2L, result);
     }
@@ -227,14 +227,9 @@ public class SleepTrackerAppTest {
         );
 
         SleeplessNights function = new SleeplessNights();
-        Long result = (Long) function.apply(sessions);
+        Long result = function.apply(sessions);
 
-        long nightSessions = sessions.stream()
-                .filter(SleepingSession::isNightSession)
-                .count();
-        long expected = 33 - nightSessions;
-
-        assertEquals(expected, result);
+        assertEquals(30L, result);
     }
 
     @Test
@@ -246,7 +241,7 @@ public class SleepTrackerAppTest {
         );
 
         ChronotypeFunction function = new ChronotypeFunction();
-        Chronotype result = (Chronotype) function.apply(sessions);
+        Chronotype result = function.apply(sessions);
 
         assertEquals(Chronotype.OWL, result);
     }
@@ -260,7 +255,7 @@ public class SleepTrackerAppTest {
         );
 
         ChronotypeFunction function = new ChronotypeFunction();
-        Chronotype result = (Chronotype) function.apply(sessions);
+        Chronotype result = function.apply(sessions);
 
         assertEquals(Chronotype.LARK, result);
     }
@@ -274,7 +269,7 @@ public class SleepTrackerAppTest {
         );
 
         ChronotypeFunction function = new ChronotypeFunction();
-        Chronotype result = (Chronotype) function.apply(sessions);
+        Chronotype result = function.apply(sessions);
 
         assertEquals(Chronotype.PIGEON, result);
     }
@@ -288,7 +283,7 @@ public class SleepTrackerAppTest {
         );
 
         ChronotypeFunction function = new ChronotypeFunction();
-        Chronotype result = (Chronotype) function.apply(sessions);
+        Chronotype result = function.apply(sessions);
 
         assertEquals(Chronotype.PIGEON, result);
     }
@@ -303,7 +298,7 @@ public class SleepTrackerAppTest {
         );
 
         ChronotypeFunction function = new ChronotypeFunction();
-        Chronotype result = (Chronotype) function.apply(sessions);
+        Chronotype result = function.apply(sessions);
 
         assertEquals(Chronotype.OWL, result);
     }

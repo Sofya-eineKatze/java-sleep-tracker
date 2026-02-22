@@ -5,11 +5,10 @@ public enum Chronotype {
 
     @Override
     public String toString() {
-        switch (this) {
-            case OWL: return "Сова";
-            case LARK: return "Жаворонок";
-            case PIGEON: return "Голубь";
-            default: return super.toString();
-        }
+        return switch (this) {
+            case OWL -> "Сова";
+            case LARK -> "Жаворонок";
+            case PIGEON -> "Голубь";
+        };
     }
 }

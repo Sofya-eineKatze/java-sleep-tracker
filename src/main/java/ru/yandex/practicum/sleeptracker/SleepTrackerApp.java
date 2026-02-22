@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SleepTrackerApp {
-    private final List<SleepAnalysisFunction> analysisFunctions;
+    private final List<SleepAnalysisFunction<?>> analysisFunctions;
 
     public SleepTrackerApp() {
         this.analysisFunctions = initializeFunctions();
     }
 
-    private List<SleepAnalysisFunction> initializeFunctions() {
-        return Arrays.<SleepAnalysisFunction>asList(
+    private List<SleepAnalysisFunction<?>> initializeFunctions() {
+        return Arrays.asList(
                 new TotalSessions(),
                 new BadQualitySessions(),
                 new AverageSleepDuration(),
@@ -34,20 +34,19 @@ public class SleepTrackerApp {
             List<SleepingSession> sessions = SleepLogReader.readSleepLog(args[0]);
             SleepTrackerApp app = new SleepTrackerApp();
             app.runAnalysis(sessions);
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println("Error parsing file: " + e.getMessage());
+        } catch (IOException exception) {
+            System.err.println("Error reading file: " + exception.getMessage());
+        } catch (IllegalArgumentException exception) {
+            System.err.println("Error parsing file: " + exception.getMessage());
         }
     }
 
     private void runAnalysis(List<SleepingSession> sessions) {
         System.out.println("=== Sleep Analysis Results ===\n");
 
-        analysisFunctions.stream()
-                .forEach(function -> {
-                    Object result = function.apply(sessions);
-                    System.out.println(new SleepAnalysisResult(function.getDescription(), result));
-                });
+        analysisFunctions.forEach(function -> {
+            Object result = function.apply(sessions);
+            System.out.println(new SleepAnalysisResult(function.getDescription(), result));
+        });
     }
 }
